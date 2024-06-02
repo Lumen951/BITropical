@@ -76,20 +76,32 @@ def detect_pit(readimg):
     # 画条线检查一下
     cv2.line(copyimg, (min_x,min_y) , (max_x,max_y), (255,0,0), 3)
     
+    distance = math.sqrt((max_x - min_x) ** 2 + (max_y - min_y) ** 2)
+    
+    # 检查区
     cv2.imshow("edge",edge)
     cv2.imshow("readimg",copyimg)
-    cv2.waitKey(0)
+    cv2.waitKey(1)
+    
+    return min_x,min_y,max_x,max_y,distance
     
     
     
 if __name__ == "__main__":
     
+    file = open("images2/task3/detect_pit.txt",'w')
+    
+    print("x_l y_l x_r y_r", file=file)
     
     for i in range(1,6):
         
+        ans = []
+        
         readimg = cv2.imread("images2/task3/%d.jpg"%i)
         
-        detect_pit(readimg)
+        ans = detect_pit(readimg)
+        
+        print(ans, file=file)
     
 
 

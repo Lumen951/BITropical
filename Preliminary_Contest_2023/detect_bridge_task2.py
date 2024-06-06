@@ -84,7 +84,7 @@ def detect_bridge(readimg):
 if __name__ == "__main__":
     
     # 打开已创建文件
-    file = open("images2/task2/detect_bridge.txt",'w')
+    file = open("images/task2/detect_bridge.txt",'w')
     
     # 分别代表 左侧点x值 左侧点y值 右侧点x值 右侧点y值 距离
     print("x_l y_l x_r y_r d", file=file)
@@ -94,7 +94,7 @@ if __name__ == "__main__":
         ans = []
         
         # 取文件名
-        filename = "images2/task2/%d.jpg"%i
+        filename = "images/task2/%d.jpg"%i
         
         # 读取图片
         readimg = cv2.imread(filename=filename)

@@ -89,7 +89,7 @@ def detect_pit(readimg):
     
 if __name__ == "__main__":
     
-    file = open("images2/task3/detect_pit.txt",'w')
+    file = open("images/task3/detect_pit.txt",'w')
     
     print("x_l y_l x_r y_r", file=file)
     
@@ -97,7 +97,7 @@ if __name__ == "__main__":
         
         ans = []
         
-        readimg = cv2.imread("images2/task3/%d.jpg"%i)
+        readimg = cv2.imread("images/task3/%d.jpg"%i)
         
         ans = detect_pit(readimg)
         

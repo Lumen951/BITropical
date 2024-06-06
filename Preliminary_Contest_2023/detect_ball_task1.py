@@ -35,7 +35,7 @@ def detect_ball(readimg):
 if __name__ == "__main__":
     
     # 打开已创建文件
-    file = open("images2/task1/detect_ball.txt",'w')
+    file = open("images/task1/detect_ball.txt",'w')
     
     # 在第一行先打个r,x,y
     print("r x y",file=file)
@@ -44,7 +44,7 @@ if __name__ == "__main__":
         ans = []
         
         # 遍历读取文件
-        filename = "images2/task1/%d.jpg"%i
+        filename = "images/task1/%d.jpg"%i
         
         # 读取图片
         readimg = cv2.imread(filename=filename)

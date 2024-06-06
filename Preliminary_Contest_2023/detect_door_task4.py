@@ -1,3 +1,10 @@
+'''
+日期:20240606
+修改人员:流明Lumen
+内容:标准赛踢小球
+功能说明:识别门内框左下和右下角坐标
+'''
+
 
 import cv2
 import numpy as np
@@ -8,6 +15,8 @@ purple_Upper = (147,255,255)
 
 # 问题依然在如何提取坐标，有了轮廓，不知道怎么找到坐标
 def detect_door(readimg):
+    
+    ans = list()
     
     copy_img = readimg.copy()
     
@@ -67,28 +76,11 @@ def detect_door(readimg):
     
     cv2.line(copy_img, (x_l, y_l), (x_r, y_r), (0,0,255), thickness=2)
     
-    '''
-    # 已废弃方法
-    # 使用LSD直线检测,效果比霍夫直线检测要好
-    LSD = cv2.createLineSegmentDetector(0)
-    
-    lines = LSD.detect(removelineimg)
-    
-    for line in lines[0]:
-        x0 = int(round(line[0][0]))
-        y0 = int(round(line[0][1]))
-        x1 = int(round(line[0][2]))
-        y1 = int(round(line[0][3]))
-        cv2.line(copy_img, (x0, y0), (x1, y1), (0,255,0), thickness=2)
-    '''
     # 测试区
-    cv2.imshow("resourceimg",copy_img)
-    
+    # cv2.imshow("resourceimg",copy_img)
     # cv2.imshow("removelineimg", removelineimg)
-    
     # cv2.imshow("edge",edge)
-    
-    cv2.waitKey(0)
+    # cv2.waitKey(0)
     
     return ans
     
@@ -96,7 +88,7 @@ def detect_door(readimg):
 
 if __name__ == '__main__':
     
-    file = open("images2/task4/detect_door.txt",'w')
+    file = open("images/task4/detect_door.txt",'w')
     
     print("x_l y_l x_r y_r", file=file)
     
@@ -104,7 +96,7 @@ if __name__ == '__main__':
     
         ans = []
 
-        readimg = cv2.imread("images2/task4/%d.jpg"%i)
+        readimg = cv2.imread("images/task4/%d.jpg"%i)
     
         ans = detect_door(readimg)
         

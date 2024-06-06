@@ -1,4 +1,9 @@
-
+'''
+日期:20240606
+修改人员:流明Lumen
+内容:标准赛踢小球
+功能说明:去除图中直线和白色背景识别小球，返回小球圆心坐标
+'''
 
 import cv2
 import numpy as np
@@ -7,6 +12,7 @@ import math
 whiteLower = (0,0,130)
 whiteUpper = (179,67,255)
 
+# 输入值：图片，识别圆的最小半径范围和最大半径范围
 def detect_Ball_upgrade(readimg, minRadius, maxRadius):
     
     # 最后要返回的坐标
@@ -20,6 +26,7 @@ def detect_Ball_upgrade(readimg, minRadius, maxRadius):
     binaryimg = cv2.inRange(blurimg, whiteLower, whiteUpper)
     
     # 这一个kernel用于去除地上的白线
+    # 白线有横有纵，所以用11*11的kernel进行去除
     kernel1 = cv2.getStructuringElement(cv2.MORPH_RECT,(11,11))
     
     # 去除地上的白线
@@ -35,10 +42,6 @@ def detect_Ball_upgrade(readimg, minRadius, maxRadius):
     # 找边缘
     contours, hierarchy = cv2.findContours(removelineimg, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
     
-    # 用霍夫圆尝试了一下，实际上效果不好
-    # circles = cv2.HoughCircles(removelineimg, cv2.HOUGH_GRADIENT, 1, 30, param1=80, param2=30, minRadius=minRadius, maxRadius=maxRadius)
-    
-    # print(circles)
     
     # 用contours进行筛选
     for cnt in contours:
@@ -47,7 +50,8 @@ def detect_Ball_upgrade(readimg, minRadius, maxRadius):
         
         # len(cnt)代表cnt中点的个数，这一步是为了筛选过少的点连起来的杂区域
         # 本质也利用了contours的存储结构，也就是存储轮廓顺序，之后存储点的序号，然后是xy值
-        # 如果点的序号比5个还少（5个看似很少，其实是因为SIMPLE模式下会压缩一些点的存储，比如一条直线只会保留首尾两个点），那就说明是个杂区域
+        # 如果点的序号比5个还少（5个看似很少，其实是因为SIMPLE模式下会压缩一些点的存储，比如一条直线只会保留首尾两个点）
+        # 那就说明是个杂区域
         if len(cnt) < 5:
             continue
         
@@ -98,29 +102,37 @@ def detect_Ball_upgrade(readimg, minRadius, maxRadius):
 
 if __name__ == '__main__':
     
-    file  = open("images2/task5/detect_ball2.txt","w")
+    # 这是用于储存坐标的txt,到时候要换成输入检测的代码
+    file  = open("images/task5/detect_ball_upgrade.txt","w")
     
     for i in range(1,6):
         
+        # 储存答案
         ans = []
         
-        filename = "images2/task5/%d.jpg"%i
+        # 打开的图片
+        filename = "images/task5/%d.jpg"%i
         
+        # 读取图片
         readimg = cv2.imread(filename=filename)
         
+        # 用于检测的图片，这些后面要删除
         testimg = readimg.copy()
         
+        # 主检测程序
         ans = detect_Ball_upgrade(readimg, 0, 100)
         
-        print(ans)
+        # print(ans)
         
+        # 输入答案到文件中
         print(ans,file=file)
         
+        # 检测程序
         for circle in ans:
             cv2.circle(testimg, (int(circle[0][0]), int(circle[0][1])), int(20), (0, 255, 0), thickness=2)
         
         cv2.imshow("circles",testimg)
-        cv2.waitKey(0)
+        cv2.waitKey(2000)
         
         
 
